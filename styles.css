@@ -39,19 +39,19 @@ body {
 }
 
 #output {
-    display: block;
+    /* display: block; */
     width: 100%;
-    height: 100%;
+    height: 120%;
 }
 
 #input {
-    display: block;
+    /* display: block; */
     width: 100%;
-    height: 100%;
+    height: 120%;
 }
 
 button {
-    display: block;
+    /* display: block; */
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     width: 200px;
     margin: 10px auto;
@@ -76,12 +76,12 @@ button {
 }
 
 /* モバイルデバイスのスタイル */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     #output, #input {
         width: 100%;
-        height: 400px;
+        height: 1000px;
     }
-}
+} */
 
 input {
     height: 25px;
