@@ -25,7 +25,7 @@ body {
 /* 映像要素のスタイル（4:3アスペクト比を維持） */
 #output, #input {
     width: 100%;
-    height: auto;
+    height: 100%;
     max-height: calc(100vw * 3 / 4); /* 4:3アスペクト比を維持 */
     background-color: black;
     object-fit: contain; /* 映像のサイズと位置を適切に維持 */
