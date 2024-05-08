@@ -39,14 +39,14 @@ body {
 #output {
     display: block;
     margin: 0 auto;
-    height: 550px;
+    height: 6000px;
     width: 300px;
 }
 
 #input {
     display: block;
     margin: 0 auto;
-    height: 550px;
+    height: 600px;
     width: 300px;
 }
 
