@@ -39,21 +39,22 @@ body {
 #output {
     display: block;
     margin: 0 auto;
-    height: 450px;
-    width: 350px;
+    height: 500px;
+    width: 300px;
 }
 
 #input {
     display: block;
     margin: 0 auto;
-    height: 450px;
-    width: 350px;
+    height: 500px;
+    width: 300px;
 }
 
 button {
     /* display: block; */
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     width: 200px;
+    height: 30px
     margin: 10px auto;
     padding: 10px;
     display: inline-block;
