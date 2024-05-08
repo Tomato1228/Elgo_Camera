@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSSファイルの読み込み -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Mediapipeライブラリの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js"></script>
+</head>
+
+<body>
+    <div class="container1">
+        <!-- Webカメラの映像（入力） -->
+        <video id="input" style="display: none;"></video>
+
+        <!-- 認識した映像（出力） -->
+        <canvas id="output"></canvas>
+    </div>
+    <div class="container2">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+    </div>
+
+    <!-- モード選択チェックボックス -->
+    <div class="container3">
+        <input type="checkbox" id="handsMode" name="handsMode">
+        <label for="handsMode" id="handsModeLabel">Hands Mode</label><br>
+        <input type="checkbox" id="holisticMode" name="holisticMode">
+        <label for="holisticMode" id="holisticModeLabel">Holistic Mode</label>
+    </div>
+
+    <!-- JavaScriptファイルの読み込み -->
+    <script src="script.js"></script>
+</body>
+
+</html>
