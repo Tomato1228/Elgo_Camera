@@ -9,6 +9,7 @@ body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+/* コンテナスタイル */
 .container1,
 .container2,
 .container3 {
@@ -21,19 +22,13 @@ body {
     padding: 0;
 }
 
-/* 映像要素のスタイル */
+/* 映像要素のスタイル（4:3アスペクト比を維持） */
 #output, #input {
     width: 100%;
-    max-height: 56.25vh; /* 16:9 アスペクト比を維持するため */
     height: auto;
+    max-height: calc(100vw * 3 / 4); /* 4:3アスペクト比を維持 */
     background-color: black;
-}
-
-/* モバイルデバイス向けのメディアクエリ */
-@media (max-width: 768px) {
-    #output, #input {
-        max-height: 75vh; /* モバイルデバイスの画面サイズに適応 */
-    }
+    object-fit: contain; /* 映像のサイズと位置を適切に維持 */
 }
 
 /* ボタンスタイル */
