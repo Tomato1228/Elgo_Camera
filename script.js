@@ -23,7 +23,7 @@ function initializeCamera() {
     // カメラの初期化
     camera = new Camera(video, {
         onFrame: processFrame,
-        facingMode: 'user' // フロントカメラを使用
+        facingMode: 'environment' // フロントカメラを使用
     });
 }
 
