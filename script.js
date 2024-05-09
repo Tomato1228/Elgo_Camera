@@ -85,36 +85,52 @@ function processHolisticResults(results) {
 
         // ランドマークがすべて存在するか確認
         if (
-            landmarks[11] && landmarks[13] && landmarks[15] && // 左肩、左肘、左手首
-            landmarks[12] && landmarks[14] && landmarks[16] && // 右肩、右肘、右手首
-            landmarks[23] && landmarks[24] && // 左腰、右腰
-            landmarks[25] && landmarks[26] && // 左膝、右膝
-            landmarks[27] && landmarks[28] // 左足首、右足首
+            landmarks[11] && //左肩
+            landmarks[13] && //左肘
+            landmarks[15] && //左手首
+            landmarks[12] && //右肩
+            landmarks[14] && //右肘
+            landmarks[16] && //右手首
+            landmarks[23] && //左腰
+            landmarks[24] && //右腰
+            landmarks[25] && //左膝
+            landmarks[26] && //右膝
+            landmarks[27] && //左足首
+            landmarks[28]    //右足首
         ) {
             // 各関節の角度を計算
-            const leftElbowAngle = calculateAngleBetweenVectors(
-                calculateVector(landmarks[11], landmarks[13]),
-                calculateVector(landmarks[13], landmarks[15])
+
+            //左肘の角度
+            const leftElbowAngle = calculateAngleBetweenPoints(
+                landmarks[11], landmarks[13], landmarks[15]
             );
-            const rightElbowAngle = calculateAngleBetweenVectors(
-                calculateVector(landmarks[12], landmarks[14]),
-                calculateVector(landmarks[14], landmarks[16])
+            //右肘の角度
+            const rightElbowAngle = calculateAngleBetweenPoints(
+                landmarks[12], landmarks[14], landmarks[16]
             );
-            const leftShoulderAngle = calculateAngleBetweenVectors(
-                calculateVector(landmarks[23], landmarks[11]),
-                calculateVector(landmarks[11], landmarks[13])
+            //左肩の角度
+            const leftShoulderAngle = 180 - calculateAngleBetweenPoints(
+                landmarks[23], landmarks[11], landmarks[13]
             );
-            const rightShoulderAngle = calculateAngleBetweenVectors(
-                calculateVector(landmarks[24], landmarks[12]),
-                calculateVector(landmarks[12], landmarks[14])
+            //右肩の角度
+            const rightShoulderAngle = 180 - calculateAngleBetweenPoints(
+                landmarks[24], landmarks[12], landmarks[14]
             );
-            const leftKneeAngle = calculateAngleBetweenVectors(
-                calculateVector(landmarks[23], landmarks[25]),
-                calculateVector(landmarks[25], landmarks[27])
+            //左膝の角度
+            const leftKneeAngle = calculateAngleBetweenPoints(
+                landmarks[23], landmarks[25], landmarks[27]
             );
-            const rightKneeAngle = calculateAngleBetweenVectors(
-                calculateVector(landmarks[24], landmarks[26]),
-                calculateVector(landmarks[26], landmarks[28])
+            //右膝の角度
+            const rightKneeAngle = calculateAngleBetweenPoints(
+                landmarks[24], landmarks[26], landmarks[28]
+            );
+            //左腰の角度
+            const leftWaistAngle = calculateAngleBetweenPoints(
+                landmarks[11], landmarks[23], landmarks[25]
+            );
+            //右腰の角度
+            const rightWaistAngle = calculateAngleBetweenPoints(
+                landmarks[12], landmarks[24], landmarks[26]
             );
 
             // 各角度をキャンバス上に描画
@@ -124,6 +140,8 @@ function processHolisticResults(results) {
             drawAngleOnCanvas(rightShoulderAngle, landmarks[12].x, landmarks[12].y);
             drawAngleOnCanvas(leftKneeAngle, landmarks[25].x, landmarks[25].y);
             drawAngleOnCanvas(rightKneeAngle, landmarks[26].x, landmarks[26].y);
+            drawAngleOnCanvas(leftWaistAngle, landmarks[23].x, landmarks[23].y);
+            drawAngleOnCanvas(rightWaistAngle, landmarks[24].x, landmarks[24].y);
         }
     }
 }
@@ -131,9 +149,9 @@ function processHolisticResults(results) {
 // 角度をキャンバス上に描画する関数
 function drawAngleOnCanvas(angle, x, y) {
     // 角度がNaNであるかチェック
-    if (isNaN(angle)) {
-        return; // NaNの場合は何も表示しない
-    }
+    // if (isNaN(angle)) {
+    //     return; // NaNの場合は何も表示しない
+    // }
 
     // 角度を整数に丸める
     const roundedAngle = Math.round(angle);
@@ -146,32 +164,42 @@ function drawAngleOnCanvas(angle, x, y) {
     }
 
     // キャンバスに角度を描画
-    ctx.font = '14px Arial'; // フォントとサイズを指定
+    ctx.font = '10px Arial'; // フォントとサイズを指定
     ctx.fillText(`${roundedAngle}°`, x * canvas.width, y * canvas.height);
 }
 
-// ベクトルの計算関数
-function calculateVector(point1, point2) {
-    return {
-        x: point2.x - point1.x,
-        y: point2.y - point1.y,
-        z: point2.z - point1.z
+// 三点で角度を計算する関数
+function calculateAngleBetweenPoints(pointA, pointB, pointC) {
+    // ベクトルABを計算
+    const vectorAB = {
+        x: pointB.x - pointA.x,
+        y: pointB.y - pointA.y,
+        z: pointB.z - pointA.z
     };
-}
-
-// ベクトル間の角度を計算する関数
-function calculateAngleBetweenVectors(vector1, vector2) {
-    // ベクトルの内積を計算
-    const dotProduct = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z;
-
+    
+    // ベクトルBCを計算
+    const vectorBC = {
+        x: pointC.x - pointB.x,
+        y: pointC.y - pointB.y,
+        z: pointC.z - pointB.z
+    };
+    
+    // 内積を計算
+    const dotProduct = vectorAB.x * vectorBC.x + vectorAB.y * vectorBC.y + vectorAB.z * vectorBC.z;
+    
     // ベクトルの大きさを計算
-    const magnitude1 = Math.sqrt(vector1.x ** 2 + vector2.y ** 2 + vector1.z ** 2);
-    const magnitude2 = Math.sqrt(vector2.x ** 2 + vector2.y ** 2 + vector2.z ** 2);
-
-    // ラジアン単位で角度を計算し、度数法に変換
-    const angleRadians = Math.acos(dotProduct / (magnitude1 * magnitude2));
+    const magnitudeAB = Math.sqrt(vectorAB.x ** 2 + vectorAB.y ** 2 + vectorAB.z ** 2);
+    const magnitudeBC = Math.sqrt(vectorBC.x ** 2 + vectorBC.y ** 2 + vectorBC.z ** 2);
+    
+    // 角度のコサインを計算
+    const cosineAngle = dotProduct / (magnitudeAB * magnitudeBC);
+    
+    // ラジアン単位での角度を三角関数のアークコサインで計算
+    const angleRadians = Math.acos(cosineAngle);
+    
+    // ラジアン単位の角度を度数法に変換
     const angleDegrees = angleRadians * (180 / Math.PI);
-
+    
     return angleDegrees;
 }
 
@@ -184,7 +212,7 @@ function drawOnCanvas(results, handConnections, ctx, canvas, holistic = false) {
     if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach(handMarks => {
             drawConnectors(ctx, handMarks, handConnections, { color: '#00f' });
-            drawLandmarks(ctx, handMarks, { color: '#f00', radius: 1 });
+            drawLandmarks(ctx, handMarks, { color: '#00FF00', radius: 1 });
         });
     }
 
@@ -192,13 +220,13 @@ function drawOnCanvas(results, handConnections, ctx, canvas, holistic = false) {
     if (holistic) {
         if (results.multiFaceLandmarks) {
             results.multiFaceLandmarks.forEach(faceMarks => {
-                drawLandmarks(ctx, faceMarks, { color: '#0f0', radius: 1 });
+                drawLandmarks(ctx, faceMarks, { color: '#0f0', radius: 0.5 });
             });
         }
 
         if (results.poseLandmarks) {
             drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, { color: '#0f0' });
-            drawLandmarks(ctx, results.poseLandmarks, { color: '#f00', radius: 1 });
+            drawLandmarks(ctx, results.poseLandmarks, { color: '#00FF00', radius: 0.5 });
         }
     }
 }
